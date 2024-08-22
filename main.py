@@ -34,13 +34,25 @@ def player(x,y):
 enemy_icon = pygame.image.load('enemy.png')
 enemyX = random.randint(0,800)
 enemyY = random.randint(50,150)
-enemyX_change = 0
-enemyY_change = 0
+enemyX_change = 0.3
+enemyY_change = 40
 
 def enemy(x,y):
     screen.blit(enemy_icon,(x,y))
 
-    
+# Missile 
+missile_icon = pygame.image.load('missile.png')
+missileX = 0
+missileY = 480
+missileX_change = 0
+missileY_change = 3
+missile_state = 'ready'
+
+def fire_missile(x,y):
+    global missile_state
+    missile_state = "fire"
+    screen.blit(missile_icon, (x+16,y+10))
+
 
 #Game loop
 running = True
@@ -58,6 +70,10 @@ while running:
                 playerX_change = -1
             if event.key == pygame.K_RIGHT:
                  playerX_change = 1
+            if event.key == pygame.K_SPACE:
+                if missile_state == 'ready':
+                    missileX = playerX
+                    fire_missile(missileX,missileY)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0.0
@@ -67,7 +83,28 @@ while running:
         playerX = 800
     elif playerX > 832:
         playerX = 0
+
+    #Move the enemy
+    enemyX += enemyX_change
+    if enemyX <= 0:
+        enemyX = 0
+        enemyX_change = 0.3
+        enemyY += enemyY_change
+    elif enemyX >=736:
+        enemyX = 736
+        enemyX_change = -0.3
+        enemyY += enemyY_change
     
+    #Missle movement
+    if missileY <=0:
+        missileY = 480
+        missile_state = 'ready'
+
+    if missile_state == "fire":
+
+        fire_missile(missileX,missileY)
+        missileY -= missileY_change
+
     playerX += playerX_change
     player(playerX,playerY)
     enemy(enemyX,enemyY)

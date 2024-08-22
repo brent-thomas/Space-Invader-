@@ -11,3 +11,6 @@ Player icon:
 
 Enemy icon:
 <a href="https://www.flaticon.com/free-icons/space-invaders" title="space-invaders icons">Space-invaders icons created by Payungkead - Flaticon</a>
+
+Missile icon:
+<a href="https://www.flaticon.com/free-icons/missile" title="missile icons">Missile icons created by Ylivdesign - Flaticon</a>
