@@ -1,8 +1,18 @@
 import random
 import math
-
+import os
+import sys
 import pygame
 from pygame import mixer
+# Handle resource paths for bundled files
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 #Init pygame
 pygame.init()
 
@@ -11,14 +21,14 @@ screen = pygame.display.set_mode((800,600))
 
 #Set title and icon
 pygame.display.set_caption("Space Invader")
-icon = pygame.image.load('ufo.png')
+icon = pygame.image.load(resource_path('ufo.png'))
 pygame.display.set_icon(icon)
 
 #load background image
-background = pygame.image.load('space_background.jpg')
+background = pygame.image.load(resource_path('space_background.jpg'))
 
 #background sound
-mixer.music.load('background.wav')
+mixer.music.load(resource_path('background.wav'))
 mixer.music.play(-1)
 
 
@@ -30,7 +40,7 @@ overlay.fill((0, 0, 0))
 
 
 # Player 
-player_icon = pygame.image.load('spaceship.png')
+player_icon = pygame.image.load(resource_path('spaceship.png'))
 playerX = 370
 playerY = 480
 playerX_change = 0
@@ -63,7 +73,7 @@ enemyX_change = []
 enemyY_change = []
 num_of_enemies = 6
 for i in range(num_of_enemies):
-    enemy_icon.append(pygame.image.load('enemy.png'))
+    enemy_icon.append(pygame.image.load(resource_path('enemy.png')))
     enemyX.append(random.randint(0,735))
     enemyY.append(random.randint(50,150))
     enemyX_change.append(0.3)
@@ -73,7 +83,7 @@ def enemy(x,y,i):
     screen.blit(enemy_icon[i],(x,y))
 
 # Missile 
-missile_icon = pygame.image.load('missile.png')
+missile_icon = pygame.image.load(resource_path('missile.png'))
 missileX = 0
 missileY = 480
 missileX_change = 0
@@ -110,7 +120,7 @@ while running:
                  playerX_change = 1
             if event.key == pygame.K_SPACE:
                 if missile_state == 'ready':
-                    missile_sound = mixer.Sound('laser.wav')
+                    missile_sound = mixer.Sound(resource_path('laser.wav'))
                     missile_sound.play()
                     missileX = playerX
                     fire_missile(missileX,missileY)
@@ -147,7 +157,7 @@ while running:
            #Collision
         collision = isCollision(enemyX[i], enemyY[i], missileX, missileY)
         if collision:
-            explosion_sound = mixer.Sound('explosion.wav')
+            explosion_sound = mixer.Sound(resource_path('explosion.wav'))
             explosion_sound.play()
             missileY = 480
             missile_state = 'ready'
